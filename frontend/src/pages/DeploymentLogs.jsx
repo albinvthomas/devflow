@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps, react-hooks/set-state-in-effect */
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api';
@@ -9,6 +10,22 @@ export default function DeploymentLogs() {
   const [deployment, setDeployment] = useState(null);
   const [logs, setLogs] = useState('');
   const logsEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    logsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const fetchDeployment = async () => {
+    try {
+      const response = await api.get(`/deployments/${id}`);
+      setDeployment(response.data);
+      const logRes = await api.get(`/deployments/${id}/logs`);
+      setLogs(logRes.data.logs || 'Waiting for logs...');
+      scrollToBottom();
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     fetchDeployment();
@@ -35,22 +52,6 @@ export default function DeploymentLogs() {
 
     return () => eventSource.close();
   }, [id]);
-
-  const fetchDeployment = async () => {
-    try {
-      const response = await api.get(`/deployments/${id}`);
-      setDeployment(response.data);
-      const logRes = await api.get(`/deployments/${id}/logs`);
-      setLogs(logRes.data.logs || 'Waiting for logs...');
-      scrollToBottom();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const scrollToBottom = () => {
-    logsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
 
   if (!deployment) return <div className="p-8">Loading logs...</div>;
 

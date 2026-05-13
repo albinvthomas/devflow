@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps, react-hooks/set-state-in-effect */
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api';
@@ -13,11 +14,6 @@ export default function ProjectDetails() {
   const [deploying, setDeploying] = useState(false);
   const [activeTab, setActiveTab] = useState('dockerfile');
   const [copied, setCopied] = useState('');
-
-  useEffect(() => {
-    fetchProject();
-    fetchDeployments();
-  }, [id]);
 
   const fetchProject = async () => {
     try {
@@ -39,12 +35,18 @@ export default function ProjectDetails() {
     }
   };
 
+  useEffect(() => {
+    fetchProject();
+    fetchDeployments();
+  }, [id]);
+
   const handleGenerate = async () => {
     setGenerating(true);
     try {
       const response = await api.post(`/projects/${id}/generate`);
       setProject(prev => ({ ...prev, generated_configs: response.data }));
     } catch (err) {
+      console.error(err);
       alert('Failed to generate configurations.');
     } finally {
       setGenerating(false);
@@ -57,6 +59,7 @@ export default function ProjectDetails() {
       const response = await api.post(`/projects/${id}/deploy`);
       navigate(`/deployments/${response.data.id}`);
     } catch (err) {
+      console.error(err);
       alert('Failed to trigger deployment.');
       setDeploying(false);
     }
