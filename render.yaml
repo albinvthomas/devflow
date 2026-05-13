@@ -1,0 +1,40 @@
+services:
+  - type: web
+    name: devflow-backend
+    env: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: devflow-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: GITHUB_CLIENT_ID
+        sync: false
+      - key: GITHUB_CLIENT_SECRET
+        sync: false
+      - key: GITHUB_CALLBACK_URL
+        value: https://devflow-frontend.onrender.com/dashboard
+      - key: GEMINI_API_KEY
+        sync: false
+
+  - type: web
+    name: devflow-frontend
+    env: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://devflow-backend.onrender.com
+
+databases:
+  - name: devflow-db
+    databaseName: devflow_db
+    user: devflow_user
+    plan: free

@@ -48,6 +48,18 @@ The easiest way to run the entire DevFlow platform is using Docker Compose:
 2. Install dependencies: `npm install`
 3. Start the dev server: `npm run dev`
 
+## Deploy to Render
+
+DevFlow is pre-configured to be deployed instantly on Render.com using Blueprint.
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+
+1. Fork this repository to your GitHub account.
+2. Go to [Render.com](https://dashboard.render.com), click **New**, and select **Blueprint**.
+3. Connect your forked repository.
+4. Render will automatically detect the `render.yaml` and prompt you to fill in your environment variables (`ANTHROPIC_API_KEY`, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `GEMINI_API_KEY`).
+5. Click **Apply** to deploy the database, backend API, and frontend site simultaneously.
+
 ## Environment Variables
 
 | Variable | Description | Example |
