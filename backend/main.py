@@ -28,8 +28,9 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:5173", 
         "http://localhost:8000",
-        "https://*.onrender.com"
-    ],  # Allows local dev and Render frontend
+        "https://*.onrender.com",
+        "https://*.vercel.app"
+    ],  # Allows local dev, Render frontend, and Vercel frontend
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

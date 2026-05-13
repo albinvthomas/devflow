@@ -1,5 +1,8 @@
 # DevFlow 🚀
 
+[![Deploy Backend](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+[![Deploy Frontend](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/albinvthomas/devflow)
+
 DevFlow is an intelligent, automated CI/CD platform that seamlessly connects to your GitHub repositories, analyzes your codebase, and uses AI (Google Gemini) to automatically generate and execute production-ready Docker and GitHub Actions configurations.
 
 ## Architecture
@@ -48,17 +51,19 @@ The easiest way to run the entire DevFlow platform is using Docker Compose:
 2. Install dependencies: `npm install`
 3. Start the dev server: `npm run dev`
 
-## Deploy to Render
+## Deploy for free (no credit card)
 
-DevFlow is pre-configured to be deployed instantly on Render.com using Blueprint.
+### Step 1 — Deploy backend to Render
+1. Go to [Render.com](https://dashboard.render.com), click **New**, and select **Blueprint**.
+2. Connect this repo, set root to `backend/`
+3. Fill in: `ANTHROPIC_API_KEY`, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `GEMINI_API_KEY`
+4. Click Deploy — copy the backend URL (e.g. `https://devflow-backend-abc.onrender.com`)
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
-
-1. Fork this repository to your GitHub account.
-2. Go to [Render.com](https://dashboard.render.com), click **New**, and select **Blueprint**.
-3. Connect your forked repository.
-4. Render will automatically detect the `render.yaml` and prompt you to fill in your environment variables (`ANTHROPIC_API_KEY`, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `GEMINI_API_KEY`).
-5. Click **Apply** to deploy the database, backend API, and frontend site simultaneously.
+### Step 2 — Deploy frontend to Vercel
+1. Go to [Vercel.com](https://vercel.com) -> **Add New Project** -> import this repo
+2. Set framework: **Vite**, root directory: `frontend/`
+3. Add env var: `VITE_API_URL` = *(your Render backend URL from step 1)*
+4. Click **Deploy**
 
 ## Environment Variables
 
