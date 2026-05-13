@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api';
-import { Play, Terminal, FileCode2, Copy, CheckCircle2, Box, Cpu, AlertCircle, FileJson } from 'lucide-react';
+import { Play, Terminal, FileCode2, Copy, CheckCircle2, Box, Cpu, AlertCircle, FileJson, Loader2 } from 'lucide-react';
 
 export default function ProjectDetails() {
   const { id } = useParams();
