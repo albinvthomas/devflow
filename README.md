@@ -53,16 +53,26 @@ The easiest way to run the entire DevFlow platform is using Docker Compose:
 
 ## Deploy for free (no credit card)
 
-### Step 1 — Deploy backend to Render
-1. Go to [Render.com](https://dashboard.render.com), click **New**, and select **Blueprint**.
-2. Connect this repo, set root to `backend/`
-3. Fill in: `ANTHROPIC_API_KEY`, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `GEMINI_API_KEY`
-4. Click Deploy — copy the backend URL (e.g. `https://devflow-backend-abc.onrender.com`)
+Since Render's "Blueprint" feature strictly requires a credit card on file (even for free tiers), we will deploy the services manually to bypass it.
 
-### Step 2 — Deploy frontend to Vercel
+### Step 1 — Get a Free Database
+1. Go to [Neon.tech](https://neon.tech/) or [Supabase.com](https://supabase.com/).
+2. Create a free Postgres database and copy the connection string.
+3. Replace the prefix `postgresql://` with `postgresql+asyncpg://`.
+
+### Step 2 — Deploy Backend to Render (Manual)
+1. Go to [Render.com](https://dashboard.render.com), click **New**, and select **Web Service** (Do NOT select Blueprint).
+2. Connect this repo, and set the following:
+   - Root Directory: `backend`
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+3. Scroll down to **Environment Variables** and fill in: `DATABASE_URL` (from Step 1), `SECRET_KEY`, `ANTHROPIC_API_KEY`, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `GEMINI_API_KEY`.
+4. Click **Deploy Web Service** — copy the backend URL (e.g. `https://devflow-backend-abc.onrender.com`)
+
+### Step 3 — Deploy Frontend to Vercel
 1. Go to [Vercel.com](https://vercel.com) -> **Add New Project** -> import this repo
 2. Set framework: **Vite**, root directory: `frontend/`
-3. Add env var: `VITE_API_URL` = *(your Render backend URL from step 1)*
+3. Add env var: `VITE_API_URL` = *(your Render backend URL from step 2)*
 4. Click **Deploy**
 
 ## Environment Variables
