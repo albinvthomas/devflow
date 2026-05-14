@@ -45,6 +45,8 @@ async def get_deployment_logs(deployment_id: UUID, db: AsyncSession = Depends(ge
     if not project_result.scalars().first():
         raise HTTPException(status_code=403, detail="Not authorized to view this deployment")
         
+    return {"logs": deployment.logs}
+
 import asyncio
 from fastapi.responses import StreamingResponse
 
