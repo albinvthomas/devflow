@@ -7,7 +7,24 @@ export default function Connect() {
   const [repoUrl, setRepoUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isLinked, setIsLinked] = useState(true); // Assume linked until verified
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkGitHubStatus = async () => {
+      try {
+        const response = await api.get('/auth/me');
+        setIsLinked(!!response.data.github_token);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    checkGitHubStatus();
+  }, []);
+
+  const handleGitHubConnect = () => {
+    window.location.href = `${import.meta.env.VITE_API_URL}/github/login`;
+  };
 
   const handleConnect = async (e) => {
     e.preventDefault();
@@ -51,25 +68,39 @@ export default function Connect() {
             </div>
           </div>
 
-          <form onSubmit={handleConnect} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-text_muted mb-2">Repository URL or Format (owner/repo)</label>
-              <div className="flex gap-3">
-                <input
-                  type="text"
-                  className="input-field flex-1"
-                  placeholder="e.g., albinvthomas/SmartPhoneDoctor"
-                  value={repoUrl}
-                  onChange={(e) => setRepoUrl(e.target.value)}
-                  required
-                />
-                <button type="submit" disabled={loading || !repoUrl} className="btn-primary whitespace-nowrap min-w-[120px] flex justify-center">
-                  {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Analyze'}
-                </button>
+          {!isLinked ? (
+            <div className="text-center py-8">
+              <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                <GitBranch className="w-8 h-8 text-primary" />
               </div>
-              {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
+              <h3 className="text-xl font-bold mb-2">GitHub Account Required</h3>
+              <p className="text-text_muted mb-6">You need to connect your GitHub account before you can import repositories.</p>
+              <button onClick={handleGitHubConnect} className="btn-primary inline-flex items-center gap-2">
+                <GitBranch className="w-5 h-5" />
+                Connect GitHub Account
+              </button>
             </div>
-          </form>
+          ) : (
+            <form onSubmit={handleConnect} className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-text_muted mb-2">Repository URL or Format (owner/repo)</label>
+                <div className="flex gap-3">
+                  <input
+                    type="text"
+                    className="input-field flex-1"
+                    placeholder="e.g., albinvthomas/SmartPhoneDoctor"
+                    value={repoUrl}
+                    onChange={(e) => setRepoUrl(e.target.value)}
+                    required
+                  />
+                  <button type="submit" disabled={loading || !repoUrl} className="btn-primary whitespace-nowrap min-w-[120px] flex justify-center">
+                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Analyze'}
+                  </button>
+                </div>
+                {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
+              </div>
+            </form>
+          )}
 
           <div className="mt-8 p-4 bg-slate-800/50 rounded-lg border border-slate-700/50">
             <h4 className="text-sm font-medium mb-2 flex items-center gap-2">

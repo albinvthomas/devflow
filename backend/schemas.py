@@ -70,3 +70,6 @@ class DevOpsConfigsResponse(BaseModel):
 
 class DeploymentLogResponse(BaseModel):
     logs: Optional[str] = None
+
+class GitHubCode(BaseModel):
+    code: str

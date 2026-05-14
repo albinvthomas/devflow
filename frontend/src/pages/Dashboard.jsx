@@ -20,8 +20,26 @@ export default function Dashboard() {
     }
   };
 
+  const handleGithubCallback = async (code) => {
+    try {
+      setLoading(true);
+      await api.post('/github/callback', { code });
+      window.history.replaceState({}, document.title, '/dashboard');
+      fetchProjects();
+    } catch (err) {
+      console.error("Failed to link GitHub", err);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    fetchProjects();
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    if (code) {
+      handleGithubCallback(code);
+    } else {
+      fetchProjects();
+    }
   }, []);
 
   return (

@@ -23,11 +23,11 @@ async def github_login():
     url = f"https://github.com/login/oauth/authorize?client_id={github_service.GITHUB_CLIENT_ID}&scope=repo"
     return RedirectResponse(url=url)
 
-@router.get("/callback")
-async def github_callback(code: str, db: AsyncSession = Depends(get_db), current_user: models.User = Depends(auth.get_current_user)):
+@router.post("/callback")
+async def github_callback(data: schemas.GitHubCode, db: AsyncSession = Depends(get_db), current_user: models.User = Depends(auth.get_current_user)):
     """Exchange the OAuth code for an access token and save it to the user profile."""
     try:
-        access_token = await github_service.exchange_code_for_token(code)
+        access_token = await github_service.exchange_code_for_token(data.code)
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error exchanging token: {str(e)}")
         
