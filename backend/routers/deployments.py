@@ -72,8 +72,7 @@ async def stream_deployment_logs(deployment_id: UUID, db: AsyncSession = Depends
             
             # Yield any new logs
             if len(current_logs) > last_log_length:
-                new_logs = current_logs[last_log_length:]
-                yield f"data: {json.dumps({'logs': new_logs, 'status': deployment.status})}\n\n"
+                yield f"data: {json.dumps({'logs': current_logs, 'status': deployment.status})}\n\n"
                 last_log_length = len(current_logs)
             
             if deployment.status in ["success", "failed"]:
