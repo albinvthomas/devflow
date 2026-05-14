@@ -1,7 +1,8 @@
 fastapi==0.109.2
 uvicorn[standard]==0.27.1
-sqlalchemy[asyncio]==2.0.25
-asyncpg==0.29.0
+sqlalchemy[asyncio]>=2.0.30
+psycopg[binary]
+psycopg-pool
 alembic==1.13.1
 passlib[bcrypt]==1.7.4
 bcrypt==3.2.2

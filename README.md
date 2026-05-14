@@ -58,7 +58,7 @@ Since Render's "Blueprint" feature strictly requires a credit card on file (even
 ### Step 1 — Get a Free Database
 1. Go to [Neon.tech](https://neon.tech/) or [Supabase.com](https://supabase.com/).
 2. Create a free Postgres database and copy the connection string.
-3. Replace the prefix `postgresql://` with `postgresql+asyncpg://`.
+3. Replace the prefix `postgresql://` with `postgresql+psycopg://`.
 
 ### Step 2 — Deploy Backend to Render (Manual)
 1. Go to [Render.com](https://dashboard.render.com), click **New**, and select **Web Service** (Do NOT select Blueprint).
@@ -66,7 +66,7 @@ Since Render's "Blueprint" feature strictly requires a credit card on file (even
    - Root Directory: `backend`
    - Build Command: `pip install -r requirements.txt`
    - Start Command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
-3. Scroll down to **Environment Variables** and fill in: `DATABASE_URL` (from Step 1), `SECRET_KEY`, `ANTHROPIC_API_KEY`, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `GEMINI_API_KEY`.
+3. Scroll down to **Environment Variables** and fill in: `DATABASE_URL` (from Step 1), `SECRET_KEY`, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `GEMINI_API_KEY`.
 4. Click **Deploy Web Service** — copy the backend URL (e.g. `https://devflow-backend-abc.onrender.com`)
 
 ### Step 3 — Deploy Frontend to Vercel
