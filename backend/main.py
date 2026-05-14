@@ -27,10 +27,9 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173", 
-        "http://localhost:8000",
-        "https://*.onrender.com",
-        "https://*.vercel.app"
-    ],  # Allows local dev, Render frontend, and Vercel frontend
+        "http://localhost:8000"
+    ],
+    allow_origin_regex=r"https://.*\.onrender\.com|https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
